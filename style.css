@@ -1,0 +1,13 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    padding: 48px;
+}
+
+.header-container{
+    display: flex;
+    justify-content: center;
+}
