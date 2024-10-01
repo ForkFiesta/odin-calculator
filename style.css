@@ -46,12 +46,19 @@ body {
 
 
 .display {
+    display: flex;
     /* border: 1px solid blue; */
     width: 350px;
     height: 100px;
     margin: 25px;
     background-color: rgba(206, 205, 205, 0.211);
     border-radius: 20px;
+    justify-content:end;
+}
+
+.displayNumbers {
+    margin-right: 10px;
+    font-size: 80px;
 }
 
 .buttons {
@@ -115,5 +122,10 @@ footer {
     text-align: center;
     color: white;
     padding-top: 20px;
+}
+
+
+.clearButton{
+    margin-left: 80px;
 }
 

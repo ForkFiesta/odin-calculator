@@ -1,214 +1,157 @@
 const numbersContainer = document.querySelector(".numbers-buttons");
 const operators = ["+", "-", "/", "*"];
+const equals = "=";
+const allowedValues = [];
 let num1 = "";
 let num2 = "";
 let opp;
+let solution;
 function createNumbers() {
-  for (let i = 1; i < 10; i++) {
-    const num = document.createElement("button");
-    num.innerHTML = i;
+    for (let i = 1; i < 10; i++) {
+        const num = document.createElement("button");
+        num.innerHTML = i;
+        numbersContainer.appendChild(num);
+        allowedValues.push(i.toString());
+    }
+    const num = document.createElement("button"); // creating number 0;
+    num.innerHTML = 0;
     numbersContainer.appendChild(num);
-  }
-  const num = document.createElement("button");
-  num.innerHTML = 0;
-  numbersContainer.appendChild(num);
+
+    const clear = document.createElement("button");
+    clear.innerHTML = "CLEAR";
+    clear.classList.add("clearButton");
+    numbersContainer.append(clear)
 }
+
 
 createNumbers();
 
-console.log(isNaN(num2));
+
+const display = document.querySelector(".display");
+const numberDisplay = document.createElement("div");
+numberDisplay.classList.add("displayNumbers");
+
 
 const buttons = document.querySelectorAll("button");
 // console.log(buttons);
 
 function eventHandler(event) {
-
-console.log(`Number 1: ${num1}\nNumber2: ${num2}\nOperator: ${opp}`);
-
-
-  if (event instanceof MouseEvent) {
     event.key = this.innerHTML;
-  }
-  else if (event.key == 'Enter')
-    {
-        event.key == '=';
-    };
+
+    if (event.key == "CLEAR")
+        {
+            num1="";
+            num2="";
+            opp=undefined;
+            solution=undefined;
+            numberDisplay.innerHTML = num1;
+            display.appendChild(numberDisplay);
+
+        }
 
     let input = event.key.toString();
-    let isNumber = checkIfNumber(input);
 
-    let isOperator = checkIfOperator(input);
+    if (allowedValues.includes(input) && opp == undefined) {
+        console.log();
+        num1 = num1 + input;
+        numberDisplay.innerHTML = num1;
+        display.appendChild(numberDisplay);
+    } else if (operators.includes(input)) {
+        opp = input;
+        numberDisplay.innerHTML = opp;
+        display.appendChild(numberDisplay);
+    } else if (opp != undefined && allowedValues.includes(input)) {
+        num2 = num2 + input;
+        numberDisplay.innerHTML = num2;
+        display.appendChild(numberDisplay);
+    } else if (
+        num1.length > 0 &&
+        num2.length > 0 &&
+        opp != undefined &&
+        input == equals
+    ) {
 
-    let isEquals = checkIfEquals(input);
+        solution = stringToOperator(Number(num1), Number(num2), opp);
+        num1 = solution.toString();
+        numberDisplay.innerHTML = num1;
+        display.appendChild(numberDisplay);
+        num2 = "";
+        opp = undefined;
+        input = undefined;
+    };
+    console.log(
+        `Event Key: ${event.key}\nInput: ${input}\nNumber1: ${num1}\nNumber2: ${num2}\nOperator:${opp}\nSolution: ${solution}`
+    );
 
-    // let firstNumComplete = checkIfFirstNumComplete(input);
-
-    let isOtherValue = (isNumber && isOperator && isEquals)
-
-
-    if (num1.length < 1)
-        {
-
-            if (isOperator || isEquals)
-                {
-                    Error("Please Input a Number First");
-                }
-            else if (isOtherValue)
-                {
-                    Error("Please input a valid character.");
-                }
-                else if (isNumber)
-                    {
-                        num1 = num1 + input;
-                    };
+    function stringToOperator(a, b, stringOperation) {
+        switch (stringOperation) {
+            case "+":
+                return a + b;
+            case "-":
+                return a - b;
+            case "/":
+                return a / b;
+            case "*":
+                return a * b;
         }
-    else if (num1.length > 0 && opp == null)
-        {
-            if (isNumber)
-                {
-                    num1 = num1 + input;
-                }
-            else if (isOperator)
-                {
-                    opp = input;
-                }
-                else if (isEquals){
-                    Error("Please input an operator first");
-                }
-                else if (isOtherValue){
-                    Error("Please input a valid character.");
-                };
-        }
-        else if (num1.length > 0 && opp != null && num2.length == 0){
-            if (!isNumber){
-                Error("Input number");
-            }
-            else{
-                num2=num2+input;
-            };
-            
-        }
-        else if (num1.length > 0 && opp != null && num2.length>0)
-            {
-                if (isNumber)
-                    {
-                        num2=num2+input;
-                    }
-                else if (isEquals)
-                    {
-                        solution = stringToOperator(num1, num2, opp);
-                        console.log(`Answer: ${solution}`)
-
-                    }
-                    else{
-                        Error("Not a valid entry;")
-                    }
-            }
-
-
-
-function checkIfNumber(input)
-{
-    console.log(`Is a number: ${!isNaN(input)}`);
-    return(!isNaN(input))
-
-}
-
-function checkIfOperator(input){
-    operators.includes(input);
-}
-
-function checkIfEquals(input)
-{
-    if (input == '='){
-        return true;
     }
-    else {
-        return false;
-    }
-}
 
+    //   console.log(
+    //     `Event: ${event} \n Event.Key: ${event.key} \n Event.innerHtml ${event.innerHTML}`
+    //   );
 
+    //   console.log(num1.length);
 
-function stringToOperator(a, b, stringOperation)
-{
-    switch(stringOperation){
-        case "+":
-            return (a+b);
-        case "-":
-            return (a-b);
-        case "/":
-            return (a/b);
-        case "*":
-            return (a*b);
+    // if(!operators.includes(event.key) && opp == null && !isNaN(event.key)) {
+    //     num1 = num1 + event.key;
+    //   }
+    //   else if (operators.includes(event.key) && opp == null)
+    //     {
+    //         opp = event.key;
+    //     } else if (opp !== null)
+    //         {
+    //             num2 = num2 + event.key;
+    //         }
 
-    }
-}
+    //   if (num1.length == 0 && isNaN(event.key) || (num1.length>0 && !operators.includes(event.key)))
+    //     {
 
+    //         Error("Not a valid entry");
 
+    //     }
+    //     else if (!isNaN(event.key)) {
+    //         num1.concat(event.key.toString());
+    //     }
+    //     else{
+    //         opp = event.key;
+    //     }
 
-//   console.log(
-//     `Event: ${event} \n Event.Key: ${event.key} \n Event.innerHtml ${event.innerHTML}`
-//   );
+    // console.log(`isNaN ${isNaN(event.key)}\nEventKey ${event.key}\n Type:${typeof(event.key)}\n Number1: ${num1}\nOperator: ${opp}\n Number 2: ${num2}`);
 
-//   console.log(num1.length);
+    //   if (isNaN(event.key) && !operators.includes(event.key)) {
+    //     console.log("Not a valid figure");
+    //   } else {
+    //     event.key = event.key.toString();
+    //   }
+    //   while (!operators.includes(event.key) && opp == "undefined") {
+    //     num1.concat(event.key);
+    //   }
 
-// if(!operators.includes(event.key) && opp == null && !isNaN(event.key)) {
-//     num1 = num1 + event.key;
-//   }
-//   else if (operators.includes(event.key) && opp == null)
-//     {
-//         opp = event.key;
-//     } else if (opp !== null)
-//         {
-//             num2 = num2 + event.key;
-//         }
-
-
-
-//   if (num1.length == 0 && isNaN(event.key) || (num1.length>0 && !operators.includes(event.key)))
-//     {
-        
-//         Error("Not a valid entry");
-            
-//     }
-//     else if (!isNaN(event.key)) {
-//         num1.concat(event.key.toString());
-//     }
-//     else{
-//         opp = event.key;
-//     }
-
-// console.log(`isNaN ${isNaN(event.key)}\nEventKey ${event.key}\n Type:${typeof(event.key)}\n Number1: ${num1}\nOperator: ${opp}\n Number 2: ${num2}`);
-
-
-    
-    
-
-//   if (isNaN(event.key) && !operators.includes(event.key)) {
-//     console.log("Not a valid figure");
-//   } else {
-//     event.key = event.key.toString();
-//   }
-//   while (!operators.includes(event.key) && opp == "undefined") {
-//     num1.concat(event.key);
-//   }
-
-//   if (operators.includes(event.key)) {
-//     opp = event.key;
-//   }
-  // else if(num1 == "undefined")
-  //     {
-  //         num1 = event.key;
-  //     }
-  //     else if (!isNaN(num1))
-  //         {
-  //             num2 = event.key;
-  //         }
+    //   if (operators.includes(event.key)) {
+    //     opp = event.key;
+    //   }
+    // else if(num1 == "undefined")
+    //     {
+    //         num1 = event.key;
+    //     }
+    //     else if (!isNaN(num1))
+    //         {
+    //             num2 = event.key;
+    //         }
 }
 
 buttons.forEach((button) => {
-  button.addEventListener("keydown", eventHandler);
-  button.addEventListener("click", eventHandler);
+    //   button.addEventListener("keydown", eventHandler);
+    button.addEventListener("click", eventHandler);
 });
 // buttons.addEventListener("click", eventHandler);
