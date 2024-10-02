@@ -87,13 +87,13 @@ function eventHandler(event) {
     function stringToOperator(a, b, stringOperation) {
         switch (stringOperation) {
             case "+":
-                return a + b;
+                return (a + b).toFixed(2);
             case "-":
-                return a - b;
+                return(a - b).toFixed(2);
             case "/":
                 return (a / b).toFixed(2);
             case "*":
-                return a * b;
+                return (a * b).toFixed(2);
         }
     }
 
