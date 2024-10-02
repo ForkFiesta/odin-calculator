@@ -16,6 +16,7 @@ function createNumbers() {
     const num = document.createElement("button"); // creating number 0;
     num.innerHTML = 0;
     numbersContainer.appendChild(num);
+    allowedValues.push("0");
 
     const clear = document.createElement("button");
     clear.innerHTML = "CLEAR";
@@ -90,7 +91,7 @@ function eventHandler(event) {
             case "-":
                 return a - b;
             case "/":
-                return a / b;
+                return (a / b).toFixed(2);
             case "*":
                 return a * b;
         }
